@@ -44,7 +44,7 @@ namespace Omnipay\Stripe\Message;
  *               'billingState'          => 'QLD',
  *   ));
  *
- *   // Do a create customer transaction on the gateway
+ *   // Do a create customer transaction on the gateway using CreditCard object
  *   $response = $gateway->createCustomer(array(
  *       'card'                     => $card,
  *   ))->send();
@@ -73,10 +73,13 @@ class CreateCustomerRequest extends AbstractRequest
             $data['email'] = $this->getEmail();
         }
 
-        if ($this->getToken()) {
-            $data['card'] = $this->getToken();
+        if ($this->getSource()) {
+            $data['source'] = $this->getSource();
+        } elseif ($this->getToken()) {
+            $data['source'] = $this->getToken();
         } elseif ($this->getCard()) {
-            $data['card'] = $this->getCardData();
+            $this->getCard()->validate();
+            $data['source'] = $this->getCardData();
             $data['email'] = $this->getCard()->getEmail();
         }
 

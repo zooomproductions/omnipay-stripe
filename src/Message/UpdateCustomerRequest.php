@@ -47,11 +47,13 @@ class UpdateCustomerRequest extends AbstractRequest
             $data['email'] = $this->getEmail();
         }
 
-        if ($this->getToken()) {
-            $data['card'] = $this->getToken();
+        if ($this->getSource()) {
+            $data['source'] = $this->getSource();
+        } elseif ($this->getToken()) {
+            $data['source'] = $this->getToken();
         } elseif ($this->getCard()) {
             $this->getCard()->validate();
-            $data['card'] = $this->getCardData();
+            $data['source'] = $this->getCardData();
             $data['email'] = $this->getCard()->getEmail();
         }
 
