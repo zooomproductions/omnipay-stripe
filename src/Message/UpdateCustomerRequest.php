@@ -42,6 +42,11 @@ class UpdateCustomerRequest extends AbstractRequest
         $data = array();
         $data['description'] = $this->getDescription();
 
+        if ($this->getEmail()) {
+            // email can be stored with the customer, rather than with the card, so can be passed in
+            $data['email'] = $this->getEmail();
+        }
+
         if ($this->getToken()) {
             $data['card'] = $this->getToken();
         } elseif ($this->getCard()) {
@@ -56,5 +61,23 @@ class UpdateCustomerRequest extends AbstractRequest
     public function getEndpoint()
     {
         return $this->endpoint . '/customers/' . $this->getCustomerReference();
+    }
+
+    
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->getParameter('email');
+    }
+
+    /**
+     * @param $value
+     * @return AbstractRequest provides a fluent interface.
+     */
+    public function setEmail($value)
+    {
+        return $this->setParameter('email', $value);
     }
 }
