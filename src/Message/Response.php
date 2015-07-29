@@ -129,4 +129,20 @@ class Response extends AbstractResponse
 
         return null;
     }
+
+
+    /**
+     * Get the error code from the response.
+     *
+     * Returns null if the request was successful.
+     *
+     * @return string|null
+     */
+    public function getCode() {
+        if (!$this->isSuccessful()) {
+            return $this->data['error']['code'];
+        }
+
+        return null;
+    }
 }
